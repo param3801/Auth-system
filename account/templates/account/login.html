@@ -1,0 +1,100 @@
+{% extends "account/base.html" %}
+{% block title %}Login Page{% endblock title %}
+
+{% block style %}
+.error-message {
+  color: red;
+  font-size: 0.875em;
+  display: none;
+}
+.text-danger {
+  color: red;
+  font-size: 0.875em;
+}
+{% endblock style %}
+
+{% block content %}
+{% if errors %}
+  {% for error in errors %}
+    <div class="text-danger">{{ error }}</div>
+  {% endfor %}
+{% endif %}
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <h3 class="card-title text-center mb-4">Login</h3>
+          <!-- Login Form -->
+          <form action="{% url 'login' %}" method="post" id="loginForm" novalidate>
+            {% csrf_token %}
+            <!-- Email Field -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+              <div class="error-message" id="emailError">Please enter a valid email address.</div>
+            </div>
+            <!-- Password Field -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Enter your password" name="password" required>
+              <div class="error-message" id="passwordError">Password is required.</div>
+            </div>
+            <!-- Submit Button -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+          </form>
+          <!-- Forgot Password and Register Links -->
+          <div class="text-center mt-3">
+            <p><a href="{% url 'password_reset' %}" class="text-decoration-none">Forgot Password?</a></p>
+            <p>Don't have an account? <a href="{% url 'registration' %}" class="text-decoration-none">Register here</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get form fields
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    // Regex pattern for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Standard email format
+
+    // Validation flags
+    let isValid = true;
+
+    // Validate Email
+    if (!emailRegex.test(email)) {
+      document.getElementById('emailError').style.display = 'block';
+      isValid = false;
+    } else {
+      document.getElementById('emailError').style.display = 'none';
+    }
+
+    // Validate Password
+    if (password === '') {
+      document.getElementById('passwordError').style.display = 'block';
+      isValid = false;
+    } else {
+      document.getElementById('passwordError').style.display = 'none';
+    }
+
+    // If all fields are valid, submit the form
+    if (isValid) {
+
+      this.submit(); // Submit the form
+      
+    }
+  });
+</script>
+{% endblock script %}

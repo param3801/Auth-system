@@ -1,0 +1,153 @@
+{% extends "account/base.html" %}
+{% block title %}Registration Form{% endblock title %}
+
+{% block style %}
+.error-message {
+  color: red;
+  font-size: 0.875em;
+  display: none;
+}
+.alert-denger {
+  color: red;
+  font-size: 0.875em;
+}
+{% endblock style %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <h3 class="card-title text-center mb-4">Register</h3>
+          <!-- Registration Form -->
+          <form action="{% url 'registration' %}" method="post" id="registrationForm">
+            {% csrf_token %}
+            <!-- Name Field -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" value="{{ form.name.value|default:'' }}" name="name" id="name" placeholder="Enter your name" required>
+              <div class="error-message" id="nameError">Name should only contain alphabets and spaces.</div>
+              {% if form.name.errors %}
+                <div class="alert-denger">
+                  {% for error in form.name.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <!-- Email Field -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" value="{{ form.email.value|default:'' }}" name="email" id="email" placeholder="Enter your email" required>
+              <div class="error-message" id="emailError">Please enter a valid email address.</div>
+              {% if form.email.errors %}
+                <div class="alert-denger">
+                  {% for error in form.email.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <!-- Password Field -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" value="{{ form.password.value|default:'' }}" name="password" id="password" placeholder="Enter your password" autocomplete="off" required>
+              <div class="error-message" id="passwordError">
+                Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, one number, and one special character.
+              </div>
+              {% if form.password.errors %}
+                <div class="alert-denger">
+                  {% for error in form.password.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <!-- Confirm Password Field -->
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" value="{{ form.confirm_password.value|default:'' }}" name="confirm_password" id="confirmPassword" placeholder="Confirm your password" autocomplete="off" required>
+              <div class="error-message" id="confirmPasswordError">Passwords do not match.</div>
+              {% if form.confirm_password.errors %}
+                <div class="alert-denger">
+                  {% for error in form.confirm_password.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <!-- Submit Button -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+          </form>
+          <!-- Login Link -->
+          <div class="text-center mt-3">
+            <p>Already have an account? <a href="{% url 'login' %}" class="text-decoration-none">Login here</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+  document.getElementById('registrationForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get form fields
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+    // Regex patterns
+    const nameRegex = /^[A-Za-z\s]+$/; // Only alphabets and spaces
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Standard email format
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; // Password requirements
+
+    // Validation flags
+    let isValid = true;
+
+    // Validate Name
+    if (!nameRegex.test(name)) {
+      document.getElementById('nameError').style.display = 'block';
+      isValid = false;
+    } else {
+      document.getElementById('nameError').style.display = 'none';
+    }
+
+    // Validate Email
+    if (!emailRegex.test(email)) {
+      document.getElementById('emailError').style.display = 'block';
+      isValid = false;
+    } else {
+      document.getElementById('emailError').style.display = 'none';
+    }
+
+    // Validate Password
+    if (!passwordRegex.test(password)) {
+      document.getElementById('passwordError').style.display = 'block';
+      isValid = false;
+    } else {
+      document.getElementById('passwordError').style.display = 'none';
+    }
+
+    // Validate Confirm Password
+    if (password !== confirmPassword) {
+      document.getElementById('confirmPasswordError').style.display = 'block';
+      isValid = false;
+    } else {
+      document.getElementById('confirmPasswordError').style.display = 'none';
+    }
+
+    // If all fields are valid, submit the form
+    if (isValid) {
+      this.submit(); // Submit the form
+    }
+  });
+</script>
+{% endblock script %}

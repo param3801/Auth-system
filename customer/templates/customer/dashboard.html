@@ -1,0 +1,8 @@
+{% extends "account/base.html" %}
+{% block title %}Dashboard{% endblock title %}
+{% block content %}
+<p><h1> Customer Dashboard</h1></p>
+<a href="{% url "password_change" %}">Change Password</a>
+{% comment %} <a href="{% url "customer-dashboard" %}" class="text-center">Dashboard</a> {% endcomment %}
+
+{% endblock content %}
