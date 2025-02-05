@@ -35,7 +35,12 @@
                   <button class="dropdown-item" >Logout</button>
                 </form>
                 </li>
+                {% if user.is_seller %}
+                <li><a class="dropdown-item" href="{% url "seller-dashboard" %}">Dashboard</a></li>
+                {% elif user.is_customer %} 
                 <li><a class="dropdown-item" href="{% url "customer-dashboard" %}">Dashboard</a></li>
+                {% endif %}
+               
 
                 <li><a class="dropdown-item" href="#">Something else here</a></li>
               </ul>

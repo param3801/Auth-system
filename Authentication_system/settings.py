@@ -82,8 +82,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Authentication_user',
-        'USER': 'root',
-        'PASSWORD': 'pappu1234,',
+        'USER': '******',
+        'PASSWORD': '**********',
         'HOST':'localhost',
         'PORT':'3306',
     }
@@ -141,7 +141,7 @@ SITE_NAME ='Auth System'
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'live.smtp.mailtrap.io'
 EMAIL_HOST_USER = 'api'
-EMAIL_HOST_PASSWORD = '12df94691d7a27dc99d0f8e43f4a6d65'
+EMAIL_HOST_PASSWORD = '**df94691**********'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 
